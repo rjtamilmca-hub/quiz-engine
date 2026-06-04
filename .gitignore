@@ -1,0 +1,7 @@
+__pycache__/
+data/
+output/
+
+credentials.json
+service_account.json
+token.json
