@@ -1,5 +1,6 @@
-BOT_TOKEN = "8230686746:AAHWfpV9lbP8q6rWSQTntUh0VfFP2MTezRQ"
+import os
 
-PARENT_FOLDER_ID = "1PT5jIL8tUr9aO58p9_SlfzLtTc3H0x_8"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+PARENT_FOLDER_ID = os.getenv("PARENT_FOLDER_ID")
 
 SERVICE_ACCOUNT_FILE = "credentials/service_account.json"
