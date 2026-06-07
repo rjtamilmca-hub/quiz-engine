@@ -291,7 +291,7 @@ async def handle_text(
     # ----------------------------
 
     elif user_states.get(
-        chat_id
+    chat_id
     ) == "waiting_subject_type1":
 
         subject_name = text
@@ -314,6 +314,22 @@ async def handle_text(
             )
 
             uploaded_count += 1
+
+            # delete output file after upload
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+        # delete all input csv files
+        for f in os.listdir(TYPE1_FOLDER):
+
+            if f.endswith(".csv"):
+
+                os.remove(
+                    os.path.join(
+                        TYPE1_FOLDER,
+                        f
+                    )
+                )
 
         await update.message.reply_text(
             f"{count} MCQs generated and "
@@ -345,19 +361,28 @@ async def handle_text(
             subject_name,
             f"{base_name}.csv"
         )
+        try:
 
-        output_path, count = generate_questions(
-            os.path.join(
-                TYPE2_FOLDER,
-                "true.csv"
-            ),
-            os.path.join(
-                TYPE2_FOLDER,
-                "false.csv"
-            ),
-            output_file
-        )
+            output_path, count = generate_questions(
+                os.path.join(
+                    TYPE2_FOLDER,
+                    "true.csv"
+                ),
+                os.path.join(
+                    TYPE2_FOLDER,
+                    "false.csv"
+                ),
+                output_file
+            )
 
+        except ValueError as e:
+
+            await update.message.reply_text(
+                str(e)
+            )
+
+            return
+        
         folder_id = get_or_create_subject_folder(
             subject_name
         )
@@ -366,6 +391,21 @@ async def handle_text(
             output_path,
             folder_id
         )
+        # delete generated output
+        if os.path.exists(output_path):
+            os.remove(output_path)
+
+        # delete true.csv and false.csv
+        for f in os.listdir(TYPE2_FOLDER):
+
+            if f.endswith(".csv"):
+
+                os.remove(
+                    os.path.join(
+                        TYPE2_FOLDER,
+                        f
+                    )
+                )
 
         await update.message.reply_text(
             f"{count} Questions Generated ✅\n"
@@ -379,7 +419,6 @@ async def handle_text(
         return
 
   
-
     # ----------------------------
     # CREATE SUBJECT
     # ----------------------------

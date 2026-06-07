@@ -49,6 +49,25 @@ def generate_questions(
 
     true_pool = true_df.to_dict("records")
     false_pool = false_df.to_dict("records")
+    print("VALIDATION ACTIVE")
+    
+    # --------------------------------
+    # minimum validation
+    # --------------------------------
+
+    if len(true_pool) < 30:
+
+        raise ValueError(
+            f"Minimum 30 TRUE statements required. "
+            f"Found: {len(true_pool)}"
+        )
+
+    if len(false_pool) < 30:
+
+        raise ValueError(
+            f"Minimum 30 FALSE statements required. "
+            f"Found: {len(false_pool)}"
+        )
 
     random.shuffle(true_pool)
     random.shuffle(false_pool)
